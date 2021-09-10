@@ -8,6 +8,12 @@ from rest_framework import permissions, renderers, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
+# Put API lookup here
+# make new file 'api.py' -> put all api calls
+    # import requets for API calls
+    # https://www.nylas.com/blog/use-python-requests-module-rest-apis/
+    # 
+
 class AppUserViewSet(viewsets.ReadOnlyModelViewSet):
     """
     This viewset automatically provides `list` and `detail` actions.

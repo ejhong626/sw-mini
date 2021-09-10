@@ -15,7 +15,7 @@ class RecipeSerializer(serializers.HyperlinkedModelSerializer):
     data = serializers.HyperlinkedRelatedField(many=True, view_name='recipe-detail', read_only=True)
 
     class Meta:
-        model = User
+        model = Recipe
         fields = ['url', 'id', 'owner', 'data']
 
 class LogSerializer(serializers.HyperlinkedModelSerializer):
@@ -23,13 +23,13 @@ class LogSerializer(serializers.HyperlinkedModelSerializer):
     log = serializers.HyperlinkedRelatedField(many=True, view_name='log-detail', read_only=True)
 
     class Meta:
-        model = User
+        model = Log
         fields = ['url', 'id', 'owner', 'data']
 
 class ItemSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = User
-        fields = ['url', 'id', 'carbohydrate', 'fats', 'protein', 'calorie', 'quantity']
+        model = Item
+        fields = ['url', 'id', 'name', 'carbohydrate', 'fats', 'protein', 'calorie', 'quantity']
 
 # class BarcodeSerializer(serializers.HyperlinkedModelSerializer):
 #     owner = serializers.ReadOnlyField(source='owner.username')

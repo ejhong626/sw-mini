@@ -2,19 +2,19 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Item(models.Model):
-    name = models.CharField(max_length = 200)
-    title = models.CharField(max_length = 100, blank = True, default = '')
+    name = models.CharField(max_length = 100, blank = True, default = '')
     carbohydrate = models.DecimalField(max_digits = 5, decimal_places = 2, default = 0)
     fats = models.DecimalField(max_digits = 5, decimal_places = 2, default = 0)
     protein = models.DecimalField(max_digits = 5, decimal_places = 2, default = 0)
     calorie = models.DecimalField(max_digits = 5, decimal_places = 2, default = 0, blank = True)
     quantity = models.IntegerField(default = 1, null = True, blank = True)
-    
+
 class Recipe(models.Model):
     created = models.DateTimeField(auto_now_add = True)
     title = models.CharField(max_length = 100, blank = True, default = '')
     owner = models.ForeignKey('auth.User', related_name = 'recipe', on_delete = models.CASCADE)
     data = models.TextField()
+        # Look into key to reference other Items
 
 class Log(models.Model):
     created = models.DateTimeField(auto_now_add = True)

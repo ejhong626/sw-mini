@@ -13,3 +13,8 @@ router.register(r'item', views.ItemViewSet)
 urlpatterns = [
     path('', include(router.urls)),
 ]
+
+
+# /username/recipe/1
+# /username/logs/1
+# /item
