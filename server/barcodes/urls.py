@@ -4,8 +4,10 @@ from barcodes import views
 
 # Create a router and register our viewsets with it.
 router = DefaultRouter()
-router.register(r'barcodes', views.BarcodeViewSet)
-router.register(r'users', views.UserViewSet)
+router.register(r'users', views.AppUserViewSet)
+router.register(r'recipe', views.RecipeViewSet)
+router.register(r'log', views.LogViewSet)
+router.register(r'item', views.ItemViewSet)
 
 # The API URLs are now determined automatically by the router.
 urlpatterns = [

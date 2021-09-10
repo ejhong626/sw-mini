@@ -2,7 +2,7 @@
 # Credits to https://github.com/github/gitignore/blob/master/Python.gitignore
 
 # Custom Files
-config.py
+server/config.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
