@@ -25,5 +25,6 @@ urlpatterns = [
     url(r'^', include('barcodes.urls')),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^schema/$', schema_view),
-    url(r'^docs/', include_docs_urls(title=API_TITLE, description=API_DESCRIPTION))
+    url(r'^docs/', include_docs_urls(title=API_TITLE, description=API_DESCRIPTION)),
+    url(r'^(?P<username>\w+)/', include('barcodes.urls'))
 ]
