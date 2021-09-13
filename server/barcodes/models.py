@@ -1,33 +1,39 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.postgres.fields import JSONField
 
 class Item(models.Model):
-    name = models.CharField(max_length = 100, blank = True, default = '')
-    carbohydrate = models.DecimalField(max_digits = 5, decimal_places = 2, default = 0)
-    fats = models.DecimalField(max_digits = 5, decimal_places = 2, default = 0)
-    protein = models.DecimalField(max_digits = 5, decimal_places = 2, default = 0)
-    calorie = models.DecimalField(max_digits = 5, decimal_places = 2, default = 0, blank = True)
-    quantity = models.IntegerField(default = 1, null = True, blank = True)
+    name = models.CharField(max_length=100, blank=True, default='')
+    carbohydrate = models.DecimalField(
+        max_digits=5, decimal_places=2, default=0)
+    fats = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+    protein = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+    calorie = models.DecimalField(
+        max_digits=5, decimal_places=2, default=0)
+    quantity = models.IntegerField(default=100, null=True, blank=True)
 
 class Recipe(models.Model):
-    created = models.DateTimeField(auto_now_add = True)
-    title = models.CharField(max_length = 100, blank = True, default = '')
-    owner = models.ForeignKey('auth.User', related_name = 'recipe', on_delete = models.CASCADE)
-    data = models.TextField()
-        # Look into key to reference other Items
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    title = models.CharField(max_length=100, blank=True, default='')
+    owner = models.ForeignKey(
+        'auth.User', related_name='recipe', on_delete=models.CASCADE)
+    ingredients = models.ManyToManyField(Item)
+    # Look into key to reference other Items
 
 class Log(models.Model):
-    created = models.DateTimeField(auto_now_add = True)
-    title = models.CharField(max_length = 100, blank = True, default = '')
-    owner = models.ForeignKey('auth.User', related_name = 'log', on_delete = models.CASCADE)
-    data = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
+    title = models.CharField(max_length=100, blank=True, default='')
+    owner = models.ForeignKey(
+        'auth.User', related_name='log', on_delete=models.CASCADE)
+    data = models.ManyToManyField(Item)
 
-class AppUser(User):
-    created = models.DateTimeField(auto_now_add = True)
-    title = models.CharField(max_length = 100, blank = True, default = '')
-    owner = models.ForeignKey('auth.User', related_name = 'users', on_delete = models.CASCADE)
-    recipe = models.ManyToManyField(Recipe)
-    log = models.ManyToManyField(Log)
+#
+# class AppUser(models.Model):
+#     user = models.OneToOneField(User, on_delete=models.CASCADE)
+#     created = models.DateTimeField(auto_now_add=True)
+#     owner = models.ForeignKey(
+#         'auth.User', related_name='users', on_delete=models.CASCADE)
 
 # from pygments import highlight
 # from pygments.lexers import get_all_lexers, get_lexer_by_name

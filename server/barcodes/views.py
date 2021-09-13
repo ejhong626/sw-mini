@@ -1,25 +1,43 @@
-from django.contrib.auth.models import User
+import json
 
-from barcodes.models import AppUser, Recipe, Log, Item
-from barcodes.serializers import AppUserSerializer, RecipeSerializer, LogSerializer, ItemSerializer
+from barcodes.models import Item, Recipe, Log
+from barcodes.serializers import ItemSerializer, UserSerializer, RecipeSerializer, LogSerializer
 from barcodes.permissions import IsOwnerOrReadOnly
+from barcodes.api import *
 
-from rest_framework import permissions, renderers, viewsets
+from django.contrib.auth.models import User
+from django.forms.models import model_to_dict
+from django.http import HttpResponse, JsonResponse
+from rest_framework import permissions, renderers, viewsets, generics
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
 # Put API lookup here
 # make new file 'api.py' -> put all api calls
-    # import requets for API calls
-    # https://www.nylas.com/blog/use-python-requests-module-rest-apis/
-    # 
+# import requets for API calls
+# https://www.nylas.com/blog/use-python-requests-module-rest-apis/
+#
 
-class AppUserViewSet(viewsets.ReadOnlyModelViewSet):
+# create item, create recipe, create logs
+
+class UserViewSet(viewsets.ReadOnlyModelViewSet):
     """
     This viewset automatically provides `list` and `detail` actions.
     """
-    queryset = AppUser.objects.all()
-    serializer_class = AppUserSerializer
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+# class AccountViewSet(viewsets.ModelViewSet):
+#     """
+#     A simple ViewSet for viewing and editing the accounts
+#     associated with the user.
+#     """
+#     serializer_class = UserSerializer
+#     permission_classes = [IsOwnerOrReadOnly]
+#
+#     def get_queryset(self):
+#         print(self.request.user.accounts.all())
+#         return self.request.user.accounts.all()
 
 class RecipeViewSet(viewsets.ModelViewSet):
     """
@@ -33,8 +51,19 @@ class RecipeViewSet(viewsets.ModelViewSet):
         permissions.IsAuthenticatedOrReadOnly,
         IsOwnerOrReadOnly, )
 
-    def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
+    def update(self, instance, validated_data):
+        ingredients_data = validated_data.pop('ingredients')
+        instance.name = validated_data.get('name', instance.name) # recipe name
+        ingredients_list = []
+
+        for ingredient in ingredients_data:
+            ingredient, created = Item.objects.get_or_create(name=ingredient["name"])
+            ingredients_list.append(ingredient)
+
+        instance.ingredients = ingredients_list
+        instance.save()
+        return instance
+
 
 class LogViewSet(viewsets.ModelViewSet):
     queryset = Log.objects.all()
@@ -43,8 +72,9 @@ class LogViewSet(viewsets.ModelViewSet):
         permissions.IsAuthenticatedOrReadOnly,
         IsOwnerOrReadOnly, )
 
-    def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
+    # def perform_create(self, serializer):
+    #     serializer.save(owner=self.request.user)
+
 
 class ItemViewSet(viewsets.ModelViewSet):
     queryset = Item.objects.all()
@@ -53,30 +83,68 @@ class ItemViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save()
 
-# class SnippetViewSet(viewsets.ModelViewSet):
-#     """
-#     This viewset automatically provides `list`, `create`, `retrieve`,
-#     `update` and `destroy` actions.
-#     Additionally we also provide an extra `highlight` action.
-#     """
-#     queryset = Snippet.objects.all()
-#     serializer_class = SnippetSerializer
-#     permission_classes = (
-#         permissions.IsAuthenticatedOrReadOnly,
-#         IsOwnerOrReadOnly, )
-#
-#     @action(detail=True, renderer_classes=[renderers.StaticHTMLRenderer])
-#     def highlight(self, request, *args, **kwargs):
-#         snippet = self.get_object()
-#         return Response(snippet.highlighted)
-#
-#     def perform_create(self, serializer):
-#         serializer.save(owner=self.request.user)
-#
-#
-# class UserViewSet(viewsets.ReadOnlyModelViewSet):
-#     """
-#     This viewset automatically provides `list` and `detail` actions.
-#     """
-#     queryset = User.objects.all()
-#     serializer_class = UserSerializer
+def create_recipe(request):
+    req = json.loads(request.body.decode())
+    recipe = Recipe(owner=req['owner'], title=req['title'])
+    recipe.save()
+    for i in req['ingredients']:
+        recipe.ingredients.add(Item(**getJSON(i['item'],i['quantity'])))
+    recipe.save()
+
+    # 'owner': username,
+    # 'title': recipe name,
+    # 'ingredients': [
+    #       {item: food name
+    #         quantity: amount}, {}, {}
+    # ]
+
+def calc_recipe_nutrition(request, title, username):
+    itemdata = ['carbohydrate','fats','protein','calorie','quantity']
+    tempitem = model_to_dict(Item(), fields=itemdata)
+    try:
+        user = User.objects.filter(username=username)[0]
+        recipes = Recipe.objects.get_queryset().filter(owner=user,title=title.replace("%20", " "))[0]
+        items = recipes.ingredients.all()
+
+        respData = {}
+        for i in items:
+            t = model_to_dict(Item(), fields=itemdata)
+            t1 = model_to_dict(i, fields=itemdata)
+            respData = {k: t.get(k) + t1.get(k) for k in set(t)}
+        return JsonResponse(respData)
+    except:
+        return HttpResponseNotFound(status=404)
+
+    # filter by name
+    # 'owner': username
+
+def create_log(request):
+    req = json.loads(request.body.decode())
+    log = Log(owner=req['owner'])
+    log.save()
+    for i in req['items']:
+        log.data.add(Item(**getJSON(i['item'],i['quantity'])))
+    log.save()
+
+def calc_log_nutrition(request, title, username):
+    itemdata = ['carbohydrate','fats','protein','calorie','quantity']
+    tempitem = model_to_dict(Item(), fields=itemdata)
+    try:
+        user = User.objects.filter(username=username)[0]
+        recipes = Recipe.objects.get_queryset().filter(owner=user,title=title.replace("%20", " "))[0]
+        items = recipes.ingredients.all()
+
+        respData = {}
+        for i in items:
+            t = model_to_dict(Item(), fields=itemdata)
+            t1 = model_to_dict(i, fields=itemdata)
+            respData = {k: t.get(k) + t1.get(k) for k in set(t)}
+        return JsonResponse(respData)
+    except:
+        return HttpResponseNotFound(status=404)
+
+    # 'owner': username,
+    # 'items': [
+    #       {item: food name
+            # quantity: amount}, {}, {}
+    # ]
