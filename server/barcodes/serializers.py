@@ -47,7 +47,7 @@ class LogSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Log
-        fields = ['url', 'id', 'owner', 'data']
+        fields = ['url', 'id', 'owner', 'data', 'created']
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     recipe = serializers.HyperlinkedRelatedField(

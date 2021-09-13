@@ -16,7 +16,7 @@ urlpatterns = [
     # path('users/{username}',views.UserViewSet, name='name-view'),
     # path('recipe/<str:username>/',views.RecipeViewSet),
     path('<str:username>/<str:title>/reccalculate/',views.calc_recipe_nutrition),
-    path('<str:username>/<str:title>/logcalculate/',views.calc_log_nutrition)
+    path('<str:username>/<int:id>/logcalculate/',views.calc_log_nutrition)
     # path('recipe/<str:nameuser>/', views.ShowUserRecipeList.as_view()),
     # path('recipe/<str:nameuser>/<int:id>/', views.ShowUserRecipeDetail.as_view()),
     # path('logs/<str:username>/',views.LogViewSet)

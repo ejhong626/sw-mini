@@ -100,7 +100,6 @@ def create_recipe(request):
 
 def calc_recipe_nutrition(request, title, username):
     itemdata = ['carbohydrate','fats','protein','calorie','quantity']
-    tempitem = model_to_dict(Item(), fields=itemdata)
     try:
         user = User.objects.filter(username=username)[0]
         recipes = Recipe.objects.get_queryset().filter(owner=user,title=title.replace("%20", " "))[0]
@@ -126,13 +125,12 @@ def create_log(request):
         log.data.add(Item(**getJSON(i['item'],i['quantity'])))
     log.save()
 
-def calc_log_nutrition(request, title, username):
+def calc_log_nutrition(request, id, username):
     itemdata = ['carbohydrate','fats','protein','calorie','quantity']
-    tempitem = model_to_dict(Item(), fields=itemdata)
     try:
         user = User.objects.filter(username=username)[0]
-        recipes = Recipe.objects.get_queryset().filter(owner=user,title=title.replace("%20", " "))[0]
-        items = recipes.ingredients.all()
+        logs = Log.objects.get_queryset().filter(owner=user,id=id)[0]
+        items = logs.data.all()
 
         respData = {}
         for i in items:
