@@ -1,5 +1,5 @@
 import json
-# import pyrebase
+import pyrebase
 import config
 
 from barcodes.models import Item, Recipe, Log
@@ -14,9 +14,9 @@ from rest_framework import permissions, renderers, viewsets, generics
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-# firebase = pyrebase.initialize_app(config)
-# fireauth = firebase.auth()
-# database = firebase.database()
+firebase = pyrebase.initialize_app(config)
+fireauth = firebase.auth()
+database = firebase.database()
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
     """
