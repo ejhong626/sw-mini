@@ -11,9 +11,9 @@ A barcode scanning application with nutritional info from FDA API.
 ## Backend
 ### Main Goals
 1. **User creates a recipe or log**: Sends HttpResponse to Backend with JSON in body, then invokes function through url call. JSON contains information on who made the instance and what ingredients are involved
-2. **User queries for their recipe or log**: Frontend would curl into a url linked to the user's username to retrieve the desired information
-3. **Frontend requests nutritional data for recipe or log**: Frontend curls to the url for the specific recipe/log, followed by a function name to get a JSONResponse
-4. **Authenticated data retrieval**: Only provide data to logged in users
+2. **Frontend requests nutritional data for recipe or log**: Frontend curls to the url for the specific recipe/log, followed by a function name to get a JSONResponse/HttpResponse
+3. **Authenticated data retrieval**: Only provide data to logged in users
+4. **Deploying server onto Firebase**: Upload Django server to Firebase for ReactJS to interact with
 
 
 The intial intent was to have a Django framework serving as a backend service for the ReactJS frontend to interact. The interaction would be mostly through HttpResponse and Url queries. At its current state, all interactions between the frontend and backend would operate as listed in the following:
@@ -23,11 +23,11 @@ The intial intent was to have a Django framework serving as a backend service fo
 # Development
 ## Backend (Edward Hong)
 ### Django Framework
-The backend started from Mozilla's article on making web frameworks, I chose [Django Framework](https://developer.mozilla.org/en-US/docs/Learn/Server-side/First_steps/Web_frameworks) since I had some experience dealing with it. I started implementing the models and views I planned in the Design image shown above and was successful in interacting with it through shell commands.
+The backend started from Mozilla's article on making web frameworks, I chose [Django Framework](https://developer.mozilla.org/en-US/docs/Learn/Server-side/First_steps/Web_frameworks) given my knowledge of the framework, there are plenty of libraries to implement authentication and url-based querying. Deciding to go with Django, I started implementing the models and views I planned in the Design image shown above and was successful in interacting with it through shell commands.
 Most of my time went into research on binding url patterns to the Django Views I designed. At its current state, I can navigate the framework with curl from shell and retrieve information with the appropriate commands.
 
-#### Demonstration
-1. Create Recipe: functionable only through shell, could not bind view to URL endpoint
+### Demonstration
+1. Create Recipe: functionable only through shell, could not bind POST requests to views from URL endpoint
 ```
 from barcodes.models import *
 from barcodes.views import *
@@ -60,7 +60,9 @@ I can similarily do the same for logs, where I populate the data field after sav
 ![alt text](md/log.png)
 Getting log results through http.
 
-##### Findings
+---
+**Further Notes**
+
 In the process of implementing the function, I had not considered how I should structure my URL heiarchy. Ideally to retrieve a recipe, I should do the following:
 ```
 http (website)/(username)/(recipe)/(recipe_id)/
@@ -71,15 +73,38 @@ http (website)/(recipe)/(recipe_id)/
 ```
 In hindsight, the current URL endpoints were not well established. Not being able to associate the recipe owner to the user through the URL made the API unintuitive and unflexible to further development. Trying to associate them now would mean rewriting barcodes/views.py since the Views were inherited from template Viewsets given by the framework. I'm assuming a method to fix this is to inherit a simpler Viewset and customize its functions (i.e., list, create, retrieve, update, destroy). Given the remaining time and conflicts with deploying on Firebase, I don't think it is feasible to implement the rest of this functionality. I much rather get the project to a functional state.
 
+---
 
-2. 
+2. User queries for their recipe or log
+As demonstrated in Goal 1, I could index into a specific recipe or log given the ID of the object. As of now, a user can find all the urls to their recipes and logs in the /user endpoint. Furthermore, a user can query for their recipe with **(website)/(username)/(title)**, which returns an ID for the user to find their recipe using **(website)/recipe/id**.
+![alt text](md/query_recipe.png)
 
+The logs have a **created** field, storing datetime information on when the logs are made, but the problem is Django querying does not work well with datetime datatypes. The current implementation is to query by username: **(website)/(username)/get/log**, which returns all id's to the user to find their logs with **(website)/log/id**. 
+![alt text](md/query_log.png)
 
-Once its completed to an operational state, I tried to deploy the project on Firebase. However, I found out that the framework I was developing was not suitable to deploy on Firebase, the host that we were trying to use. Firebase is more suitable for static content but the Django framework is designed to be dynamic.
+3. Authenticated data retrieval: Not Possible
 
-### Deploying Django framework on Firebase
+---
+**Further Notes**
+
+Initially, I planned on packaging the authentification service solely on the Django framework, but upon testing in deployment, I found numerous problems with this idea. Firstly, I did not realize that Django comes with its own user interface, and its authentification services would authorize the current user in session through cookies. On further research, I found that this issue can be circumvented by providing the user a token which the user would include in the POST request to the server.
+However, I deem this solution unreasonable as it poses a security threat. Since I've decided all communications between the frontend and backend to be solely HTTP Requests, any packet analyzers (netShark) could decode the url and get the token to an authenticated user. Whereas the provided authentication services of Firebase would have been much more secure for it encrypts all its [credentials](https://firebaseopensource.com/projects/firebase/scrypt/).
+
+---
+
+4. Deploying server onto Firebase: Possible, but ...
+
+Once the project was completed to an operational state, I tried to deploy the project on Firebase. However, I found out that the framework I was developing was not suitable to deploy on Firebase, the host that we were trying to use. Firebase is more suitable for static content but the Django framework is designed to be dynamic.
+
 The Firebase documentation provides a method to deploy a Django project on their website, and the process goes as follows. I would pair Google Cloud Run with Firebase to build the REST APIs as microservices. That is done by deploying the framework as an application packaged in a container image. Then, Firebase can direct HTTPS requests to the containerized app. ([Link](https://firebase.google.com/docs/hosting/cloud-run))
 (Post images of containerizing app)
+
+---
+**Further Notes**
+
+In retrospect, I should have done more research on the feasibility of hosting a Django project on Firebase
+
+---
 
 ## Frontend (Eva Zhou)
 
