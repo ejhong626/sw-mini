@@ -1,10 +1,18 @@
-# sw-mini
+# sw-mini Summary
 Senior Mini Project
-A barcode scanning application with nutritional info from FDA API.
+A barcode scanning application with nutritional info from FDA API. The design is implemented with ReactJS front end that communicates with a Django backend server. The two endpoints communicate with one another through HttpResponse/Response/JsonResponse requests. The project is not deployable onto Firebase given the remaining amount of time, **details will be listed below**.
+
+# Table of Contents
+- [File Names](#file-names)
+- [Design Choices](#design-choices)
+    - [Main Goals](#main-goals)
+
 
 # File Names
 * env: virtual environment folder, keep in same directory as top folder for *server*
 * server: contains most of the Django code
+* public: directory to containerize the app for Google Cloud Run
+
 
 # Design Choices
 ![alt text](md/Design.png)
@@ -15,8 +23,8 @@ A barcode scanning application with nutritional info from FDA API.
 3. **Authenticated data retrieval**: Only provide data to logged in users
 4. **Deploying server onto Firebase**: Upload Django server to Firebase for ReactJS to interact with
 
-
 The intial intent was to have a Django framework serving as a backend service for the ReactJS frontend to interact. The interaction would be mostly through HttpResponse and Url queries. At its current state, all interactions between the frontend and backend would operate as listed in the following:
+
 
 ## Frontend
 
@@ -50,7 +58,6 @@ recipe1.ingredients.add(item1,item2,item3)
 recipe.save()
 ```
 
-
 The same shell calls can be applied to log files for users.
 
 ```
@@ -61,13 +68,13 @@ log1.save()
 ```
 
 
- Image of calling recipe  | Image of calling log 
+ Image of Calling Recipe  | Image of Calling Log 
 :-------------------------:|:-------------------------:
 ![](md/log.png)  |  ![](md/log.png)
 *Getting recipe results through http*| *Getting log results through http*
 
-
-**Further Notes**
+---
+**Reflection on How Goals Were Met**
 
 In the process of implementing the function, I had not considered how I should structure my URL heiarchy. Ideally to retrieve a recipe, I should do the following:
 ```
@@ -81,7 +88,8 @@ In hindsight, the current URL endpoints were not well established. Not being abl
 
 ---
 
-**2. User queries for their recipe or log**
+
+**2. User Queries For Their Recipe or Log**
 
 As demonstrated in Goal 1, I could index into a specific recipe or log given the ID of the object. As of now, a user can find all the urls to their recipes and logs in the /user endpoint. Furthermore, a user can query for their recipe with **(website)/(username)/(title)**, which returns an ID for the user to find their recipe using **(website)/recipe/id**.
 ![alt text](md/query_recipe.png)
@@ -89,34 +97,44 @@ As demonstrated in Goal 1, I could index into a specific recipe or log given the
 The logs have a **created** field, storing datetime information on when the logs are made, but the problem is Django querying does not work well with datetime datatypes. The current implementation is to query by username: **(website)/(username)/get/log**, which returns all id's to the user to find their logs with **(website)/log/id**. 
 ![alt text](md/query_log.png)
 
-**3. Authenticated data retrieval:** Not Possible
+
+**3. Authenticated Data Retrieval:** Not Possible on Firebase
+
+The Django server has authentication implemented in the framework, which only allows users with the right credientials to write or edit information they have created. If done anonymously, the attempt will be denied by the server.
+
+| Image of Authenication Attempt | 
+|:-------------------------:|
+|![](md/auth.png)  |
+|*Http POST will not work if done anonymously*|
+
 
 ---
-**Further Notes**
+**Details on Why Authentication Doesn't Work**
 
 Initially, I planned on packaging the authentification service solely on the Django framework, but upon testing in deployment, I found numerous problems with this idea. Firstly, I did not realize that Django comes with its own user interface, and its authentification services would authorize the current user in session through cookies. On further research, I found that this issue can be circumvented by providing the user a token which the user would include in the POST request to the server.
+
 However, I deem this solution unreasonable as it poses a security threat. Since I've decided all communications between the frontend and backend to be solely HTTP Requests, any packet analyzers (netShark) could decode the url and get the token to an authenticated user. Whereas the provided authentication services of Firebase would have been much more secure for it encrypts all its [credentials](https://firebaseopensource.com/projects/firebase/scrypt/).
 
 ---
 
-4. Deploying server onto Firebase: Possible, but ...
+
+4. Deploying Server Onto Firebase: Possible, but not enough time to troubleshoot
 
 Once the project was completed to an operational state, I tried to deploy the project on Firebase. However, I found out that the framework I was developing was not suitable to deploy on Firebase, the host that we were trying to use. Firebase is more suitable for static content but the Django framework is designed to be dynamic.
 
-The Firebase documentation provides a method to deploy a Django project on their website, and the process goes as follows. I would pair Google Cloud Run with Firebase to build the REST APIs as microservices. That is done by deploying the framework as an application packaged in a container image. Then, Firebase can direct HTTPS requests to the containerized app. ([Link](https://firebase.google.com/docs/hosting/cloud-run))
-(Post images of containerizing app)
+The Firebase documentation provides a method to deploy a Django project on their website, and the process goes as follows. I would pair Google Cloud Run with Firebase to build the REST APIs as microservices. That is done by deploying the framework as an application packaged in a container image. Then, Firebase can direct HTTPS requests to the containerized app. 
+
+I've made an attempt on containerizing the app, as shown from the ([tutorial](https://cloud.google.com/python/django/run)). However, I was only able to follow the tutorial up to the point which they run the yaml file and Dockerfile to containerize the sample application.
 
 ---
-**Further Notes**
+**Detail Notes**
 
-In retrospect, I should have done more research on the feasibility of hosting a Django project on Firebase
+In retrospect, I should have done more research on the feasibility of hosting a Django project on Firebase. 
 
 ---
+
 
 ## Frontend (Eva Zhou)
-
-
-# Findings
 
 
 # Credits
