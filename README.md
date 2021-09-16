@@ -27,7 +27,11 @@ The backend started from Mozilla's article on making web frameworks, I chose [Dj
 Most of my time went into research on binding url patterns to the Django Views I designed. At its current state, I can navigate the framework with curl from shell and retrieve information with the appropriate commands.
 
 ### Demonstration
-1. Create Recipe: functionable only through shell, could not bind POST requests to views from URL endpoint
+**1. Create Recipe:** functionable only through shell, could not bind POST requests to views from URL endpoint
+
+Through shell commands, I save a recipe (with no ingredients) to initialize a referrable id. Then save the individual items (and save to assign id) and then populate the ingredient parameter. The **itemname** can be replaced with a 12-digit barcode and still work.
+
+
 ```
 from barcodes.models import *
 from barcodes.views import *
@@ -45,22 +49,24 @@ item3.save()
 recipe1.ingredients.add(item1,item2,item3)
 recipe.save()
 ```
-Through shell commands, I save a recipe (with no ingredients) to initialize a referrable id. Then save the individual items (and save to assign id) and then populate the ingredient parameter. The **itemname** can be replaced with a 12-digit barcode and still work.
 
-![alt text](md/recipe.png)
-Getting recipe results through http.
+
+The same shell calls can be applied to log files for users.
+
 ```
 log1 = Log(owner=user)
 log1.save()
 log1.data.add(item1,item3)
 log1.save()
 ```
-I can similarily do the same for logs, where I populate the data field after saving to assign an id
 
-![alt text](md/log.png)
-Getting log results through http.
 
----
+ Image of calling recipe  | Image of calling log 
+:-------------------------:|:-------------------------:
+![](md/log.png)  |  ![](md/log.png)
+*Getting recipe results through http*| *Getting log results through http*
+
+
 **Further Notes**
 
 In the process of implementing the function, I had not considered how I should structure my URL heiarchy. Ideally to retrieve a recipe, I should do the following:
@@ -75,14 +81,15 @@ In hindsight, the current URL endpoints were not well established. Not being abl
 
 ---
 
-2. User queries for their recipe or log
+**2. User queries for their recipe or log**
+
 As demonstrated in Goal 1, I could index into a specific recipe or log given the ID of the object. As of now, a user can find all the urls to their recipes and logs in the /user endpoint. Furthermore, a user can query for their recipe with **(website)/(username)/(title)**, which returns an ID for the user to find their recipe using **(website)/recipe/id**.
 ![alt text](md/query_recipe.png)
 
 The logs have a **created** field, storing datetime information on when the logs are made, but the problem is Django querying does not work well with datetime datatypes. The current implementation is to query by username: **(website)/(username)/get/log**, which returns all id's to the user to find their logs with **(website)/log/id**. 
 ![alt text](md/query_log.png)
 
-3. Authenticated data retrieval: Not Possible
+**3. Authenticated data retrieval:** Not Possible
 
 ---
 **Further Notes**
