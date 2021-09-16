@@ -18,6 +18,8 @@ urlpatterns = [
     # path('users/{username}',views.UserViewSet, name='name-view'),
     # path('create_recipe/',csrf_exempt(views.RecipeViewSet.create)),
     # path('create_recipe/', csrf_exempt(views.RecipeViewSet.create)),
+    path('<str:username>/<str:title>/',views.get_recipe),
+    path('<str:username>/get/log/',views.get_log),
     path('<str:username>/<str:title>/reccalculate/',views.calc_recipe_nutrition),
     path('<str:username>/<int:id>/logcalculate/',views.calc_log_nutrition)
     # path('recipe/<str:nameuser>/', views.ShowUserRecipeList.as_view()),
@@ -25,6 +27,6 @@ urlpatterns = [
     # path('logs/<str:username>/',views.LogViewSet)
 ]
 
-urlpatterns += router.urls
+urlpatterns = router.urls
 # /users/<int:id>/
 # /users/<int:id>/

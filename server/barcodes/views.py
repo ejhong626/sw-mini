@@ -6,8 +6,9 @@ from barcodes.permissions import IsOwnerOrReadOnly
 from barcodes.api import *
 
 from django.contrib.auth.models import User
+from django.core import serializers
 from django.forms.models import model_to_dict
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseNotFound
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import permissions, renderers, viewsets, generics
 from rest_framework.decorators import action
@@ -52,18 +53,21 @@ class RecipeViewSet(viewsets.ModelViewSet):
         permissions.IsAuthenticatedOrReadOnly,
         IsOwnerOrReadOnly, )
 
-    def update(self, instance, validated_data):
-        ingredients_data = validated_data.pop('ingredients')
-        instance.name = validated_data.get('name', instance.name) # recipe name
-        ingredients_list = []
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
 
-        for ingredient in ingredients_data:
-            ingredient, created = Item.objects.get_or_create(name=ingredient["name"])
-            ingredients_list.append(ingredient)
-
-        instance.ingredients = ingredients_list
-        instance.save()
-        return instance
+    # def update(self, instance, validated_data):
+    #     ingredients_data = validated_data.pop('ingredients')
+    #     instance.name = validated_data.get('name', instance.name) # recipe name
+    #     ingredients_list = []
+    #
+    #     for ingredient in ingredients_data:
+    #         ingredient, created = Item.objects.get_or_create(name=ingredient["name"])
+    #         ingredients_list.append(ingredient)
+    #
+    #     instance.ingredients = ingredients_list
+    #     instance.save()
+    #     return instance
 
 
 class LogViewSet(viewsets.ModelViewSet):
@@ -113,6 +117,24 @@ def calc_recipe_nutrition(request, title, username):
             t1 = model_to_dict(i, fields=itemdata)
             respData = {k: t.get(k) + t1.get(k) for k in set(t)}
         return JsonResponse(respData)
+    except:
+        return HttpResponseNotFound(status=404)
+
+def get_recipe(request, title, username):
+    try:
+        user = User.objects.filter(username=username)[0]
+        recipe = Recipe.objects.get_queryset().filter(owner=user,title=title.replace("%20", " "))
+        rec_json = serializers.serialize("json", recipe)
+        return HttpResponse(rec_json)
+    except:
+        return HttpResponseNotFound(status=404)
+
+def get_log(request, username):
+    try:
+        user = User.objects.filter(username=username)[0]
+        log = Log.objects.get_queryset().filter(owner=user)
+        log_json = serializers.serialize("json", log, fields = ("pk"))
+        return HttpResponse(log_json)
     except:
         return HttpResponseNotFound(status=404)
 
