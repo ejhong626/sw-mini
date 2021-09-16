@@ -8,6 +8,7 @@ from barcodes.api import *
 from django.contrib.auth.models import User
 from django.forms.models import model_to_dict
 from django.http import HttpResponse, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework import permissions, renderers, viewsets, generics
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -83,13 +84,14 @@ class ItemViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save()
 
-def create_recipe(request):
-    req = json.loads(request.body.decode())
+def create_recipe(request, format=None):
+    req = json.loads(request.data.decode())
     recipe = Recipe(owner=req['owner'], title=req['title'])
     recipe.save()
     for i in req['ingredients']:
         recipe.ingredients.add(Item(**getJSON(i['item'],i['quantity'])))
     recipe.save()
+    # return HttpResponse("OK")
 
     # 'owner': username,
     # 'title': recipe name,
@@ -117,6 +119,7 @@ def calc_recipe_nutrition(request, title, username):
     # filter by name
     # 'owner': username
 
+@csrf_exempt
 def create_log(request):
     req = json.loads(request.body.decode())
     log = Log(owner=req['owner'])

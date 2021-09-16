@@ -1,6 +1,8 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from barcodes import views
+from django.views.decorators.csrf import csrf_exempt
+
 
 # Create a router and register our viewsets with it.
 router = DefaultRouter()
@@ -14,7 +16,8 @@ router.register(r'item', views.ItemViewSet)
 urlpatterns = [
     path('', include(router.urls)),
     # path('users/{username}',views.UserViewSet, name='name-view'),
-    # path('recipe/<str:username>/',views.RecipeViewSet),
+    # path('create_recipe/',csrf_exempt(views.RecipeViewSet.create)),
+    # path('create_recipe/', csrf_exempt(views.RecipeViewSet.create)),
     path('<str:username>/<str:title>/reccalculate/',views.calc_recipe_nutrition),
     path('<str:username>/<int:id>/logcalculate/',views.calc_log_nutrition)
     # path('recipe/<str:nameuser>/', views.ShowUserRecipeList.as_view()),
@@ -22,6 +25,6 @@ urlpatterns = [
     # path('logs/<str:username>/',views.LogViewSet)
 ]
 
-# urlpatterns += router.urls
+urlpatterns += router.urls
 # /users/<int:id>/
 # /users/<int:id>/
