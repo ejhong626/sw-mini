@@ -195,9 +195,15 @@ We expect the Recipe screen to store five barcodes scanned and returned by the S
 
 ![alt text](md/recipeState.png)
 
-After that, I implement onGoBack, which will be passed to the Scan screen as a parameter and will be called when returning from the Scan screen. It checks the states for the five items and passes the scanned data to the 
-
+After that, I implement onGoBack, which will be passed to the Scan screen as a parameter and will be called when returning from the Scan screen. It checks the states for the five items and passes the scanned data to the "barcode" of the item which its state of "scanned" is true. Since the "scanned" state of each item is changed to true when the according camera icon is clicked and is changed back to false when the scanned data is stored, there will be only one "scanned" state to be true every time onGoBack is called. 
 ---
+
+**intake.js**
+const IntakeScreen: displays the design for the Intake screen and has the same functions as the Recipe screen. 
+
+![alt text](md/IntakeScreen.png)
+
+
 
 # Reflection
 **Edward Hong**
