@@ -47,11 +47,11 @@ The intial intent was to have a Django framework serving as a backend service fo
 ## Frontend
 ### Main Goals 
 
-1. **Users log in with their google emails**: 
-2. **Scan the barcodes of the products**:
-3. **Ask the users for amount of servings**: 
-4. **Get the scanned products' nutritional data from the database**: 
-5. **Calculate and display the calories**: 
+1. **Users log in with their google emails**: Use the functions in Expo GoogleSignIn package to create an access for the users to log in with Google emails. 
+2. **Scan the barcodes of the products**: Use the functions in Expo BarCodeScanner package to implement the function of scanning and recording the barcodes. 
+3. **Ask the users for amount of servings**: Enable the users to enter the amount of servings via { TextInput } from "react-native", then store the inputs via { useState } from "react"
+4. **Get the scanned products' nutritional data from the database**: Use the function in React Native Firebase package to send request to and get the nutritional data from the Firebase database. 
+5. **Calculate and display the calories**
 
 # Backend Development
 
@@ -223,7 +223,7 @@ const ResultScreen: displays the design for the Result screen.
 
 ![alt text](md/ResultScreen.png)
 
-Due to the failure in retrieving the authenticated data on firebase, here I fail to implement the function that calculates the calories for the recipes and daily intakes. 
+Due to the failure in retrieving the authenticated data on Firebase, here I fail to implement the function that calculates the calories for the recipes and daily intakes. 
 
 **scan.js** 
 
@@ -248,7 +248,7 @@ After that, I tried to set up an Android virtual machine. I successfully initiat
 Given my lack of knowledge in app development, I should have asked for advice on how one should be structured. Advice would be crucial when it came to how the app should be developed, since I did not know there was a distinction between static and dynamic content that could be hosted onto Firebase. I think the [design](#design-choices) I came up with is not bad but its certainly unsuitable for the host we chose. In retrospect, I should have done more research on the feasibility of hosting a Django project on Firebase. 
 
 **Chenyuan Zhou**
-This is my first experience in developing a multi-platform application with both frontend and backend. I took plenty of time on learning the tools and ignored the importance of managing the project as a whole. As a result, I couldn't see and solve the problems timely: when I finally found those problems, the problems become much more complicated to solve than before, and I was running out of time. What's more, I didn't communicate with my teammate enough. If we frequently checked each other's progress, we should notice the Firebase problem sooner. 
+This is my first experience in developing a multi-platform application with both frontend and backend. I took plenty of time on learning the tools and ignored the importance of managing the project as a whole. As a result, I couldn't see and solve the problems timely: when I finally noticed the main problems, the problems had already become much more complicated to solve than before, and I was running out of time. What's more, I didn't communicate with my teammate enough. If we frequently checked each other's progress, we should notice the Firebase problem sooner. 
 
 # Credits
 **Front End Designer**: Eva Zhou
