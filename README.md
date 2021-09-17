@@ -190,8 +190,13 @@ const RecipeScreen: displays the design for the Recipe screen, navigates to the 
 
 ![alt text](md/RecipeScreen.png)
 ---
-**The Way I Implement the Back-and-Forth Transitions between Recipe Screen and Scan Screen** 
-First, I import {useState} from 'react' package. 
+**Transitions between Recipe Screen and Scan Screen** 
+We expect the Recipe screen to store five barcodes scanned and returned by the Scan screen, so it is important to keep track of whether the barcode for each item is scanned and to make the Recipe screen able to store the barcodes returned. To implement these two essential functions, I first use {useState} from "react" package to initiate variables for storing the data. 
+
+![alt text](md/recipeState.png)
+
+After that, I implement onGoBack, which will be passed to the Scan screen as a parameter and will be called when returning from the Scan screen. It checks the states for the five items and passes the scanned data to the 
+
 ---
 
 # Reflection
