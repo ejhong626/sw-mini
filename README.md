@@ -157,7 +157,9 @@ For the frontend development, React Native is employed as the framework engine. 
 The development OS is Windows 10, and the application is run in web brouser during testing. 
 
 # Frontend Hierarchy and Files 
+![alt text](md/FrontendHierarchy.png)
 
+**App.js** 
 
 
 
