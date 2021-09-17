@@ -4,6 +4,13 @@ import { StyleSheet, TouchableOpacity, Text, View, Platform, TextInput, Activity
 import { Feather } from '@expo/vector-icons';
 
 const IntakeScreen = ({navigation}) =>{
+    const [scanned, setScanned] = useState({
+        scanned1: false,
+        scanned2: false, 
+        scanned3: false,
+        scanned4: false,
+        scanned5: false
+    }); 
     const [value, setValue] = useState({
         item1: '',
         barcode1: '',
