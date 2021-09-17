@@ -190,12 +190,14 @@ const RecipeScreen: displays the design for the Recipe screen, navigates to the 
 
 ![alt text](md/RecipeScreen.png)
 ---
+
 **Transitions between Recipe Screen and Scan Screen** 
-We expect the Recipe screen to store five barcodes scanned and returned by the Scan screen, so it is important to keep track of whether the barcode for each item is scanned and to make the Recipe screen able to store the barcodes returned. To implement these two essential functions, I first use {useState} from "react" package to initiate variables for storing the data. 
+We expect the Recipe screen to store five barcodes scanned and returned by the Scan screen, so it is important to keep track of whether the barcode for each item is scanned and to make the Recipe screen able to store the barcodes returned. To implement these two essential functions, I first use {useState} from "react" package to initiate variables for storing the data.
 
 ![alt text](md/recipeState.png)
 
-After that, I implement onGoBack, which will be passed to the Scan screen as a parameter and will be called when returning from the Scan screen. It checks the states for the five items and passes the scanned data to the "barcode" of the item which its state of "scanned" is true. Since the "scanned" state of each item is changed to true when the according camera icon is clicked and is changed back to false when the scanned data is stored, there will be only one "scanned" state to be true every time onGoBack is called. 
+After that, I implement onGoBack, which will be passed to the Scan screen as a parameter and will be called when returning from the Scan screen. It checks the states for the five items and passes the scanned data to the "barcode" of the item which its state of "scanned" is true. Since the "scanned" state of each item is changed to true when the according camera icon is clicked and is changed back to false when the scanned data is stored, there will be only one "scanned" state to be true every time onGoBack is called.  
+
 ---
 
 **intake.js**
