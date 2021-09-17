@@ -11,17 +11,23 @@
 
 # sw-mini Summary
 Senior Mini Project
-A barcode scanning application with nutritional info from FDA API. The design is implemented with ReactJS front end that communicates with a Django backend server. The two endpoints communicate with one another through HttpResponse/Response/JsonResponse requests. The project is not deployable onto Firebase given the remaining amount of time, **details will be listed below**.
+A barcode scanning application with nutritional info from FDA API. The project is not deployable onto Firebase given the remaining amount of time, **details will be listed below**. ([Click to see what works and what doesn't](#demonstration))
 
 
 # File Names
 * env: virtual environment folder, keep in same directory as top folder for *server*
-* server: contains most of the Django code
-* public: directory to containerize the app for Google Cloud Run
+* server: contains Django server backend
+* public: directory with files to deploy Django onto Google Cloud Run
 
 
 # Design Choices
 ![alt text](md/Design.png)
+
+The design is implemented with ReactJS front end that communicates with a Django backend server. The frontend would have 4 main interfaces: Login, Homepage, Recipe, Log. Login would provide authentication of the user in session, Homepage would direct users to establish a log or recipe, Recipe stores recipe and display established recipe, Log would be the same as Recipe. 
+
+Backend would be a Django server that communicates with the frontend through HttpResponse/Response/JsonResponse requests. Through the Requests, the frontend could tailor the requests to only query for the information it needs. Similarily, through Requests, the frontend could POST information into the database on the server.
+
+
 ## Backend
 ### Main Goals
 
@@ -119,7 +125,7 @@ The Django server has authentication implemented in the framework, which only al
 
 Initially, I planned on packaging the authentification service solely on the Django framework, but upon testing in deployment, I found numerous problems with this idea. Firstly, I did not realize that Django comes with its own user interface, and its authentification services would authorize the current user in session through cookies. On further research, I found that this issue can be circumvented by providing the user a token which the user would include in the POST request to the server.
 
-However, I deem this solution unreasonable as it poses a security threat. Since I've decided all communications between the frontend and backend to be solely HTTP Requests, any packet analyzers (netShark) could decode the url and get the token to an authenticated user. Whereas the provided authentication services of Firebase would have been much more secure for it encrypts all its [credentials](https://firebaseopensource.com/projects/firebase/scrypt/).
+However, I deem this solution unreasonable as it poses a security threat. Since I've decided all communications between the frontend and backend to be solely HTTP Requests, any packet analyzers (netShark) could decode the url and get the token to an authenticated user. Whereas the provided authentication services of Firebase would have been much more secure for it [encrypts](https://firebaseopensource.com/projects/firebase/scrypt/) all its credentials.
 
 ---
 
