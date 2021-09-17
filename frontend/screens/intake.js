@@ -31,7 +31,7 @@ const IntakeScreen = ({navigation}) =>{
           item5: '',
           barcode5: ''
         })
-        navigation.navigate("Main")
+        navigation.navigate("Result")
       }
 
       const refresh = () => {
