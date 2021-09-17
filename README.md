@@ -1,5 +1,5 @@
 # Table of Contents
-- [sw-mini Summary](#sw--mini-summary)
+- [sw-mini Summary](#sw-mini-summary)
 - [File Names](#file-names)
 - [Design Choices](#design-choices)
     - [Backend](#backend)
