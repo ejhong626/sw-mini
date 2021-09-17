@@ -1,15 +1,17 @@
-# sw-mini Summary
-Senior Mini Project
-A barcode scanning application with nutritional info from FDA API. The design is implemented with ReactJS front end that communicates with a Django backend server. The two endpoints communicate with one another through HttpResponse/Response/JsonResponse requests. The project is not deployable onto Firebase given the remaining amount of time, **details will be listed below**.
-
 # Table of Contents
+- [sw-mini Summary](#sw--mini-summary)
 - [File Names](#file-names)
 - [Design Choices](#design-choices)
     - [Backend](#backend)
 - [Backend Development](#backend-development) 
-    - [Django Framework](#django-framework)
     - [Demonstration](#demonstration)
+- [Reflection](#Reflection)
 - [Credits](#credits)
+
+
+# sw-mini Summary
+Senior Mini Project
+A barcode scanning application with nutritional info from FDA API. The design is implemented with ReactJS front end that communicates with a Django backend server. The two endpoints communicate with one another through HttpResponse/Response/JsonResponse requests. The project is not deployable onto Firebase given the remaining amount of time, **details will be listed below**.
 
 
 # File Names
@@ -34,7 +36,7 @@ The intial intent was to have a Django framework serving as a backend service fo
 ## Frontend
 
 # Backend Development
-## Django Framework
+
 The backend started from Mozilla's article on making web frameworks, I chose [Django Framework](https://developer.mozilla.org/en-US/docs/Learn/Server-side/First_steps/Web_frameworks) given my knowledge of the framework, there are plenty of libraries to implement authentication and url-based querying. Deciding to go with Django, I started implementing the models and views I planned in the Design image shown above and was successful in interacting with it through shell commands.
 Most of my time went into research on binding url patterns to the Django Views I designed. At its current state, I can navigate the framework with curl from shell and retrieve information with the appropriate commands.
 
@@ -128,18 +130,15 @@ Once the project was completed to an operational state, I tried to deploy the pr
 
 The Firebase documentation provides a method to deploy a Django project on their website, and the process goes as follows. I would pair Google Cloud Run with Firebase to build the REST APIs as microservices. That is done by deploying the framework as an application packaged in a container image. Then, Firebase can direct HTTPS requests to the containerized app. 
 
-I've made an attempt on containerizing the app, as shown from the ([tutorial](https://cloud.google.com/python/django/run)). However, I was only able to follow the tutorial up to the point which they run the yaml file and Dockerfile to containerize the sample application.
-
----
-**Detail Notes**
-
-In retrospect, I should have done more research on the feasibility of hosting a Django project on Firebase. 
-
----
+I've made an attempt on containerizing the app, as shown from the ([tutorial](https://cloud.google.com/python/django/run)). I was able to authorize Cloud SQL onto my machine and establish a PostgresSQL dataset on Google Cloud server. I also made a Cloud Storage bucket to store the Django static assets and gave the Clould Buiild access to the SQL. However, I could not finish the rest of the steps, which required a .yaml file and Dockerfile to deploy Django on the Cloud server. Given enough time, maybe I could properly deploy the Django app onto the Cloud server.
 
 
 ## Frontend (Eva Zhou)
 
+
+# Reflection
+**Edward Hong**
+Given my lack of knowledge in app development, I should have asked for advice on how one should be structured. Advice would be crucial when it came to how the app should be developed, since I did not know there was a distinction between static and dynamic content that could be hosted onto Firebase. I think the [design](#design-choices) I came up with is not bad but its certainly unsuitable for the host we chose. In retrospect, I should have done more research on the feasibility of hosting a Django project on Firebase. 
 
 # Credits
 **Front End Designer**: Eva Zhou
