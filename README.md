@@ -19,7 +19,7 @@ A barcode scanning application with nutritional info from FDA API. The project i
 * env: virtual environment folder, keep in same directory as top folder for *server*
 * server: contains Django server backend
 * public: directory with files to deploy Django onto Google Cloud Run
-
+* frontend: contains React Native framework 
 
 
 # Design Choices
@@ -148,7 +148,17 @@ I've made an attempt on containerizing the app, as shown from the ([tutorial](ht
 
 # Frontend Development 
 
-For the frontend development, React Native is employed as the framework engine. Additionally, Expo is the main set of tools and services that are used in building the multi-platform application framework for this mini project. 
+For the frontend development, React Native is employed as the framework engine. Additionally, Expo is the main set of tools and services that are used in building the multi-platform application framework for this mini project. For implementing specific functions, the following stes of tools are installed: 
+
+1. React Native Navigation: https://reactnavigation.org/docs/getting-started
+2. Expo BarCodeScanner: https://docs.expo.dev/versions/latest/sdk/bar-code-scanner/
+3. React Native Firebase: https://rnfirebase.io/ 
+
+The development OS is Windows 10, and the application is run in web brouser during testing. 
+
+# Frontend Hierarchy and Files 
+
+
 
 
 # Reflection
