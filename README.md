@@ -157,10 +157,13 @@ For the frontend development, React Native is employed as the framework engine. 
 The development OS is Windows 10, and the application is run in web brouser during testing. 
 
 # Frontend Hierarchy and Files 
+
 **Hierarchy Diagram** 
+
 ![alt text](md/FrontendHierarchy.png)
 
 **App.js** 
+
 const HomeScreen: displays the design for the Home screen and navigates to Login Screen when the user clicks on the button. 
 ![alt text](md/HomeScreen.png)
 const App: initiates the stack navigator, which manages the transitions between screens 
