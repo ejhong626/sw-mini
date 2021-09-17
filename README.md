@@ -21,6 +21,7 @@ A barcode scanning application with nutritional info from FDA API. The project i
 * public: directory with files to deploy Django onto Google Cloud Run
 
 
+
 # Design Choices
 ![alt text](md/Design.png)
 
@@ -41,7 +42,9 @@ The intial intent was to have a Django framework serving as a backend service fo
 
 
 ## Frontend
-###
+### Main Goals 
+
+1. **Users log in with their email addresses and passwords**: 
 
 # Backend Development
 
@@ -141,7 +144,11 @@ The Firebase documentation provides a method to deploy a Django project on their
 I've made an attempt on containerizing the app, as shown from the ([tutorial](https://cloud.google.com/python/django/run)). I was able to authorize Cloud SQL onto my machine and establish a PostgresSQL dataset on Google Cloud server. I also made a Cloud Storage bucket to store the Django static assets and gave the Clould Buiild access to the SQL. However, I could not finish the rest of the steps, which required a .yaml file and Dockerfile to deploy Django on the Cloud server. Given enough time, maybe I could properly deploy the Django app onto the Cloud server.
 
 
-## Frontend (Eva Zhou)
+## Frontend 
+
+# Frontend Development 
+
+For the frontend development, React Native is employed as the framework engine. Additionally, Expo is the main set of tools and services that are used in building the multi-platform application framework for this mini project. 
 
 
 # Reflection
