@@ -5,7 +5,11 @@ A barcode scanning application with nutritional info from FDA API. The design is
 # Table of Contents
 - [File Names](#file-names)
 - [Design Choices](#design-choices)
-    - [Main Goals](#main-goals)
+    - [Backend](#backend)
+- [Backend Development](#backend-development) 
+    - [Django Framework](#django-framework)
+    - [Demonstration](#demonstration)
+- [Credits](#credits)
 
 
 # File Names
@@ -18,6 +22,7 @@ A barcode scanning application with nutritional info from FDA API. The design is
 ![alt text](md/Design.png)
 ## Backend
 ### Main Goals
+
 1. **User creates a recipe or log**: Sends HttpResponse to Backend with JSON in body, then invokes function through url call. JSON contains information on who made the instance and what ingredients are involved
 2. **Frontend requests nutritional data for recipe or log**: Frontend curls to the url for the specific recipe/log, followed by a function name to get a JSONResponse/HttpResponse
 3. **Authenticated data retrieval**: Only provide data to logged in users
@@ -28,13 +33,12 @@ The intial intent was to have a Django framework serving as a backend service fo
 
 ## Frontend
 
-# Development
-## Backend (Edward Hong)
-### Django Framework
+# Backend Development
+## Django Framework
 The backend started from Mozilla's article on making web frameworks, I chose [Django Framework](https://developer.mozilla.org/en-US/docs/Learn/Server-side/First_steps/Web_frameworks) given my knowledge of the framework, there are plenty of libraries to implement authentication and url-based querying. Deciding to go with Django, I started implementing the models and views I planned in the Design image shown above and was successful in interacting with it through shell commands.
 Most of my time went into research on binding url patterns to the Django Views I designed. At its current state, I can navigate the framework with curl from shell and retrieve information with the appropriate commands.
 
-### Demonstration
+## Demonstration
 **1. Create Recipe:** functionable only through shell, could not bind POST requests to views from URL endpoint
 
 Through shell commands, I save a recipe (with no ingredients) to initialize a referrable id. Then save the individual items (and save to assign id) and then populate the ingredient parameter. The **itemname** can be replaced with a 12-digit barcode and still work.
