@@ -9,6 +9,8 @@ import LogScreen from './screens/login';
 import MainScreen from './screens/main';
 import RecipeScreen from './screens/recipe';
 import ScanScreen from './screens/scan';
+import ResultScreen from './screens/result';
+import IntakeScreen from './screens/intake';
 
 
 const Stack = createNativeStackNavigator(); 
@@ -22,12 +24,6 @@ const HomeScreen = ({navigation}) => {
        onPress={() => navigation.navigate("Log In")}
       >
        <Text>Log In</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-       style={styles.button}
-       onPress={() => navigation.navigate("Registration")}
-      >
-       <Text>Register</Text>
       </TouchableOpacity>
     </View>
   )
@@ -47,10 +43,11 @@ const App = () =>{
         <Stack.Navigator>
           <Stack.Screen name='Home' component={HomeScreen}/>
           <Stack.Screen name='Log In' component={LogScreen}/>
-          <Stack.Screen name='Registration' component={RegisterScreen}/>
           <Stack.Screen name='Main' component={MainScreen}/>
-          <Stack.Screen name='Recipe' component={RecipeScreen}/>
+          <Stack.Screen name='Recipe' component={RecipeScreen} initialParams={{barcode:''}}/>
           <Stack.Screen name='Scan' component={ScanScreen}/>
+          <Stack.Screen name='Result' component={ResultScreen}/>
+          <Stack.Screen name='Intake' component={IntakeScreen} initialParams={{barcode:''}}/>
           
         </Stack.Navigator>
       </NavigationContainer>
