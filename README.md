@@ -6,7 +6,10 @@
     - [Frontend](#frontend) 
 - [Backend Development](#backend-development) 
     - [Demonstration](#demonstration)
-- [Reflection](#Reflection)
+- [Frontend Development](#frontend-development) 
+    - [Frontend Hierarchy and Files](#frontend-hierarchy-files) 
+    - [Main Difficulties in Frontend Development](#main-difficulties-frontend)
+- [Reflection](#Reflection) 
 - [Credits](#credits)
 
 
@@ -45,6 +48,10 @@ The intial intent was to have a Django framework serving as a backend service fo
 ### Main Goals 
 
 1. **Users log in with their google emails**: 
+2. **Scan the barcodes of the products**:
+3. **Ask the users for amount of servings**: 
+4. **Get the scanned products' nutritional data from the database**: 
+5. **Calculate and display the calories**: 
 
 # Backend Development
 
@@ -167,6 +174,7 @@ The development OS is Windows 10, and the application is run in web brouser duri
 const HomeScreen: displays the design for the Home screen and navigates to the Login Screen when the user clicks on the button. 
 
 ![alt text](md/HomeScreen.png)
+
 const App: initiates the stack navigator, which manages the transitions between screens 
 
 ![alt text](md/app.png)
@@ -176,7 +184,8 @@ const App: initiates the stack navigator, which manages the transitions between 
 const LogScreen: displays the design for the Login screen. When the user clicks on the "Enter" button, the "email" and "password" inputs are stored, and the user is navigated to the Main screen.
 
 ![alt text](md/LogScreen.png)
-The first main goal **Users log in with their google emails** should be achieved here. However, since Expo GoogleSignIn doesn't support web platform and I fail to set up other platforms, this goal is not accomplished. 
+
+Here I fail to implement the function that enables the user to actually log in with their google emails, because Expo GoogleSignIn doesn't support web platform and I fail to set up other platforms. 
 
 **main.js** 
 
@@ -189,9 +198,11 @@ const MainScreen: displays the design for the Main screen, navigates to the Reci
 const RecipeScreen: displays the design for the Recipe screen, navigates to the Scan screen when the user clicks on the camera icon, stores the barcodes scanned and returned by the Scan screen, clear the recorded inputs up when the user clicks on the "Refresh" button, and stores all the input values (including the barcodes) and navigates to the Result screen when the user clicks on the "Enter" button.
 
 ![alt text](md/RecipeScreen.png)
+
 ---
 
 **Transitions between Recipe Screen and Scan Screen** 
+
 We expect the Recipe screen to store five barcodes scanned and returned by the Scan screen, so it is important to keep track of whether the barcode for each item is scanned and to make the Recipe screen able to store the barcodes returned. To implement these two essential functions, I first use {useState} from "react" package to initiate variables for storing the data.
 
 ![alt text](md/recipeState.png)
@@ -201,15 +212,43 @@ After that, I implement onGoBack, which will be passed to the Scan screen as a p
 ---
 
 **intake.js**
+
 const IntakeScreen: displays the design for the Intake screen and has the same functions as the Recipe screen. 
 
 ![alt text](md/IntakeScreen.png)
 
+**result.js** 
+
+const ResultScreen: displays the design for the Result screen.
+
+![alt text](md/ResultScreen.png)
+
+Due to the failure in retrieving the authenticated data on firebase, here I fail to implement the function that calculates the calories for the recipes and daily intakes. 
+
+**scan.js** 
+
+const ScanScreen: is supposed to display the design for the Scan screen, ask for the access to the camera, scan the barcode, and navigate back to the Recipe screen or the Intake screen and call onGoBack( {scanned data} ) when the barcode is scanned. 
+I am not able to check whether the Scan screen is working properly, because Expo Camera doesn't support web platform and I fail to set up other platforms. 
+
+# Main Difficulties in Frontend Development 
+
+**1. Failing to Get Data from Database **
+
+This problem is resulted from the backend difficulties. 
+
+**2. Setting up the platforms other than web brouser, especially android or ios virtual machines.** 
+
+At the beginning of the development, I check the progress with web platform all the time because it is easy to use and convenient. However, as the development progresses, I gradually natice the importance of using other platforms: the tool packages that support web platform are limited. 
+Since the mobile phone I am using now is an ios device, I firstly tried to run our app on ios device. I downloaded the Expo Go App, logged in my account, and clicked on my app which was shown under "RECENTLY IN DEVELOPMENT". Unfortunately, after running for a long time, it failed to open the project. Since my app worked fine on web browser, I suspected that the problem wasn't with the project itself. However, searching for this situation on the Internet, I neither found similar problems nor the solutions to the problem. 
+After that, I tried to set up an Android virtual machine. I successfully initiated an Android virtual machine in Android Studio and added the essential paths to the environment variables of my OS. However, when I tried running the project via Android emulator, it failed to open it and displayed the error message "Couldn't start project on Android: Error running adb: It took too long to start the Android emulator: Pixel_2_API_30." I spent plenty of time solving this error but failed. 
 
 
 # Reflection
 **Edward Hong**
 Given my lack of knowledge in app development, I should have asked for advice on how one should be structured. Advice would be crucial when it came to how the app should be developed, since I did not know there was a distinction between static and dynamic content that could be hosted onto Firebase. I think the [design](#design-choices) I came up with is not bad but its certainly unsuitable for the host we chose. In retrospect, I should have done more research on the feasibility of hosting a Django project on Firebase. 
+
+**Chenyuan Zhou**
+This is my first experience in developing a multi-platform application with both frontend and backend. I took plenty of time on learning the tools and ignored the importance of managing the project as a whole. As a result, I couldn't see and solve the problems timely: when I finally found those problems, the problems become much more complicated to solve than before, and I was running out of time. What's more, I didn't communicate with my teammate enough. If we frequently checked each other's progress, we should notice the Firebase problem sooner. 
 
 # Credits
 **Front End Designer**: Eva Zhou
