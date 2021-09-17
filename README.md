@@ -25,7 +25,7 @@ A barcode scanning application with nutritional info from FDA API. The project i
 # Design Choices
 ![alt text](md/Design.png)
 
-The design is implemented with ReactJS front end that communicates with a Django backend server. The frontend would have 4 main interfaces: Login, Homepage, Recipe, Log. Login would provide authentication of the user in session, Homepage would direct users to establish a log or recipe, Recipe stores recipe and display established recipe, Log would be the same as Recipe. 
+The design is implemented with ReactJS front end that communicates with a Django backend server. The frontend would have 4 main interfaces: Login, Homepage, Recipe, Intake. Login would provide authentication of the user in session, Homepage would direct users to establish a log or recipe, Recipe stores recipe and display established recipe, Intake would be the same as Recipe. 
 
 Backend would be a Django server that communicates with the frontend through HttpResponse/Response/JsonResponse requests. Through the Requests, the frontend could tailor the requests to only query for the information it needs. Similarily, through Requests, the frontend could POST information into the database on the server.
 
@@ -44,7 +44,7 @@ The intial intent was to have a Django framework serving as a backend service fo
 ## Frontend
 ### Main Goals 
 
-1. **Users log in with their email addresses and passwords**: 
+1. **Users log in with their google emails**: 
 
 # Backend Development
 
@@ -164,10 +164,35 @@ The development OS is Windows 10, and the application is run in web brouser duri
 
 **App.js** 
 
-const HomeScreen: displays the design for the Home screen and navigates to Login Screen when the user clicks on the button. 
+const HomeScreen: displays the design for the Home screen and navigates to the Login Screen when the user clicks on the button. 
+
 ![alt text](md/HomeScreen.png)
 const App: initiates the stack navigator, which manages the transitions between screens 
 
+![alt text](md/app.png)
+
+**login.js** 
+
+const LogScreen: displays the design for the Login screen. When the user clicks on the "Enter" button, the "email" and "password" inputs are stored, and the user is navigated to the Main screen.
+
+![alt text](md/LogScreen.png)
+The first main goal **Users log in with their google emails** should be achieved here. However, since Expo GoogleSignIn doesn't support web platform and I fail to set up other platforms, this goal is not accomplished. 
+
+**main.js** 
+
+const MainScreen: displays the design for the Main screen, navigates to the Recipe screen when the user clicks on "Recipe", and navigates to Intake screen when the user clicks on "Daily Intake". 
+
+![alt text](md/MainScreen.png)
+
+**recipe.js** 
+
+const RecipeScreen: displays the design for the Recipe screen, navigates to the Scan screen when the user clicks on the camera icon, stores the barcodes scanned and returned by the Scan screen, clear the recorded inputs up when the user clicks on the "Refresh" button, and stores all the input values (including the barcodes) and navigates to the Result screen when the user clicks on the "Enter" button.
+
+![alt text](md/RecipeScreen.png)
+---
+**The Way I Implement the Back-and-Forth Transitions between Recipe Screen and Scan Screen** 
+First, I import {useState} from 'react' package. 
+---
 
 # Reflection
 **Edward Hong**
