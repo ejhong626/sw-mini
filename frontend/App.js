@@ -44,10 +44,10 @@ const App = () =>{
           <Stack.Screen name='Home' component={HomeScreen}/>
           <Stack.Screen name='Log In' component={LogScreen}/>
           <Stack.Screen name='Main' component={MainScreen}/>
-          <Stack.Screen name='Recipe' component={RecipeScreen} initialParams={{barcode:''}}/>
+          <Stack.Screen name='Recipe' component={RecipeScreen}/>
           <Stack.Screen name='Scan' component={ScanScreen}/>
           <Stack.Screen name='Result' component={ResultScreen}/>
-          <Stack.Screen name='Intake' component={IntakeScreen} initialParams={{barcode:''}}/>
+          <Stack.Screen name='Intake' component={IntakeScreen}/>
           
         </Stack.Navigator>
       </NavigationContainer>
