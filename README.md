@@ -3,6 +3,7 @@
 - [File Names](#file-names)
 - [Design Choices](#design-choices)
     - [Backend](#backend)
+    - [Frontend](#frontend) 
 - [Backend Development](#backend-development) 
     - [Demonstration](#demonstration)
 - [Reflection](#Reflection)
@@ -40,6 +41,7 @@ The intial intent was to have a Django framework serving as a backend service fo
 
 
 ## Frontend
+###
 
 # Backend Development
 
