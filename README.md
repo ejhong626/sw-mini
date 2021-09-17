@@ -232,7 +232,7 @@ I am not able to check whether the Scan screen is working properly, because Expo
 
 # Main Difficulties in Frontend Development 
 
-**1. Failing to Get Data from Database **
+**1. Failing to Get Data from Database**
 
 This problem is resulted from the backend difficulties. 
 
